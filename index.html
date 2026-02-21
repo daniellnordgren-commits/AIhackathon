@@ -1,34 +1,41 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Min Grundläggande Hemsida</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      margin: 50px;
-      background-color: #f5f5f5;
-    }
-    h1 {
-      color: #2c3e50;
-    }
-    p {
-      color: #34495e;
-    }
-    a {
-      color: #2980b9;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="Scripts/isRockFx.js"></script>
+    <script>
+        $(function () {
+            $('#ButtonCal').click(
+                function () {
+                    //取得用戶輸入的參數
+                    var para = { 'height': $('#txbHeight').val(), 'weight': $('#txbWeight').val() };
+                    //呼叫API
+                    ExecuteAPI('Example', 'BMI', para,
+			//呼叫WebAPI成功時運行的Call Back Function
+                        function (result) {
+                            alert(result.Data);
+                        }
+                        );
+                }
+                );
+        });
+    </script>
 </head>
 <body>
-  <h1>Välkommen till min hemsida!</h1>
-  <p>Detta är en grundläggande HTML-sida som kan hostas på GitHub Pages eller öppnas lokalt.</p>
-  <p><a href="https://www.example.com" target="_blank">Exempel-länk</a></p>
+    <div class="row" style="margin:10px">
+        <div class="col-md-12">
+            <div class="form-group">
+                身高:
+                <input id="txbHeight" class="form-control" placeholder="請輸入身高" />
+                體重:
+                <input id="txbWeight" class="form-control" placeholder="請輸入體重" />
+                <br />
+                <button class="btn btn-primary" id="ButtonCal">計算</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
