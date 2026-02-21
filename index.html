@@ -1,29 +1,62 @@
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const url = form.url.value;
-  const email = form.email.value;
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO URL-formulär</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin: 50px; }
+    input, button { padding: 10px; margin: 5px; font-size: 16px; }
+    #result { margin-top: 20px; font-size: 18px; font-weight: bold; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto;}
+    .ok { color: green; }
+    .problem { color: red; }
+    pre { white-space: pre-wrap; word-wrap: break-word; }
+  </style>
+</head>
+<body>
+  <h1>SEO-kollen - Bedömer din hemsida</h1>
 
-  try {
-    const response = await fetch('YOUR_N8N_WEBHOOK_URL', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url, email })
+  <form id="seoForm">
+    <input type="url" name="url" placeholder="Skriv in URL" required>
+    <input type="email" name="email" placeholder="Skriv in e-post" required>
+    <button type="submit">Skicka</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    const form = document.getElementById('seoForm');
+    const resultDiv = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = form.url.value;
+      const email = form.email.value;
+
+      try {
+        const response = await fetch('YOUR_N8N_WEBHOOK_URL', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url, email })
+        });
+
+        const data = await response.json();
+        const result = data[0].json; // JSON from n8n
+
+        let output = `
+          <p>Meta description exists: <strong>${result.metaDescriptionExists}</strong></p>
+          <p>Meta description length OK: <strong>${result.metaDescriptionLengthOk}</strong></p>
+          <p>Meta description text: <pre>${result.metaDescriptionText || 'None'}</pre></p>
+          <p>Content links count: <strong>${result.contentLinksCount}</strong></p>
+          <p>Content links: <pre>${result.contentLinks.join('\n') || 'None'}</pre></p>
+        `;
+        resultDiv.innerHTML = output;
+        resultDiv.className = 'ok';
+      } catch (err) {
+        resultDiv.textContent = 'Fel vid anrop till n8n: ' + err;
+        resultDiv.className = 'problem';
+      }
     });
-
-    const data = await response.json();
-    const result = data[0]; // your JSON from n8n
-
-    let output = `
-      <p>Meta description exists: <strong>${result.metaDescriptionExists}</strong></p>
-      <p>Meta description length OK: <strong>${result.metaDescriptionLengthOk}</strong></p>
-      <p>Meta description text: <strong>${result.metaDescriptionText || 'None'}</strong></p>
-      <p>Content links count: <strong>${result.contentLinksCount}</strong></p>
-      <p>Content links: <strong>${result.contentLinks.join(', ')}</strong></p>
-    `;
-    resultDiv.innerHTML = output;
-    resultDiv.className = 'ok';
-  } catch (err) {
-    resultDiv.textContent = 'Fel vid anrop till n8n: ' + err;
-    resultDiv.className = 'problem';
-  }
-});
+  </script>
+</body>
+</html>
