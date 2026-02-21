@@ -38,9 +38,9 @@
         });
 
         const data = await response.json();
-        console.log(data); // kolla i console för debug
+        console.log('Raw response from n8n:', data);
 
-        // h1Count finns redan i första objektet i arrayen
+        // Eftersom n8n returnerar array direkt
         const h1Count = data[0]?.h1Count || 0;
 
         if (h1Count > 0) {
