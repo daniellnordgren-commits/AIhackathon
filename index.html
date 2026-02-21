@@ -13,7 +13,7 @@
   </style>
 </head>
 <body>
-  <h1>SEO-kollen - Bedömer din hemsida 4</h1>
+  <h1>SEO-kollen - Bedömer din hemsida 6</h1>
 
   <form id="seoForm">
     <input type="url" name="url" placeholder="Skriv in URL" required>
@@ -40,8 +40,8 @@
         const data = await response.json();
         console.log(data); // kolla i console för debug
 
-        // Direkt från objektet, eftersom det inte är en array
-        const h1Count = data.h1Count || 0;
+        // Plocka h1Count från första objektet i arrayen
+        const h1Count = data[0]?.h1Count || 0;
 
         if (h1Count > 0) {
           resultDiv.textContent = 'Antal H1-taggar: ' + h1Count;
