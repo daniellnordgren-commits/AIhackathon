@@ -13,7 +13,7 @@
   </style>
 </head>
 <body>
-  <h1>SEO-kollen - Bedömer din hemsida 6</h1>
+  <h1>SEO-kollen - Bedömer din hemsida</h1>
 
   <form id="seoForm">
     <input type="url" name="url" placeholder="Skriv in URL" required>
@@ -40,15 +40,15 @@
         const data = await response.json();
         console.log(data); // kolla i console för debug
 
-        // Plocka h1Count från första objektet i arrayen
+        // h1Count finns redan i första objektet i arrayen
         const h1Count = data[0]?.h1Count || 0;
 
         if (h1Count > 0) {
           resultDiv.textContent = 'Antal H1-taggar: ' + h1Count;
-          resultDiv.className = 'ok'; // grön text
+          resultDiv.className = 'ok';
         } else {
           resultDiv.textContent = 'Inga H1-taggar hittades';
-          resultDiv.className = 'problem'; // röd text
+          resultDiv.className = 'problem';
         }
 
       } catch (err) {
