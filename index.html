@@ -40,7 +40,7 @@
         const data = await response.json();
         console.log(data); // kolla i console för debug
 
-        // Om n8n returnerar array: [ { "h1Count": 2 } ]
+        // Plocka h1Count från första objektet i arrayen
         const h1Count = data[0]?.h1Count || 0;
 
         if (h1Count > 0) {
